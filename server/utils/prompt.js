@@ -172,12 +172,17 @@ Return exactly one JSON object with this exact structure, these exact key names,
     "data": "string"
   },
   "charts": [
-    {
-      "type": "bar",
-      "title": "string",
-      "data": [{ "label": "string", "value": 0 }]
-    }
-  ]
+  {
+    "type": "bar",
+    "title": "string",
+    "data": [
+      {
+        "name": "string",
+        "value": 0
+      }
+    ]
+  }
+]
 }
 
 Field notes:

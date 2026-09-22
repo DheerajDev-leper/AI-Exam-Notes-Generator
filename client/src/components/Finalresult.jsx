@@ -1,6 +1,8 @@
 import { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import Mermaid from "./Mermaid"
+import Chart from "./Chart"
+import { downloadPdf } from "../services/api"
 
 const markdownComponents = {
     h1: ({ children }) => (
@@ -68,16 +70,14 @@ function Finalresult({ result }) {
 
                 <div className="flex gap-2">
                     <button onClick={()=>setquickRevision(!quickRevision)}
-                     className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white">
-                        PDF Download
+                     className={`rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white
+                     ${quickRevision ? "bg-indigo-600" : "bg-gray-400"}`}>
+                        {quickRevision ? "Quick Revision" : "Detailed Notes"}
+                    </button>
+                    <button onClick={() =>downloadPdf(result)} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white">
+                        Download PDF
                     </button>
 
-                    <button className={`rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white
-                        ${quickRevision
-                            ?"":""}
-                        }`}>
-                        {quickRevision ? "Exit Revision Mode": "Quick revision"}
-                    </button>
                 </div>
             </div>
 
@@ -140,6 +140,22 @@ function Finalresult({ result }) {
                 <Mermaid diagram={result.diagram?.data} />
                 <p>
                     If you need diaagram just take screenshot
+                </p>
+            </section>}
+
+            { result.charts?.length > 0 &&
+                <section>
+                <SectionHeader icon="chart" title="Charts" color="cyan" />
+                    <Chart charts={result.charts} />
+                    <p>
+                        If you need charts just take screenshot.
+                    </p>
+            </section>}
+
+            {result.charts?.length === 0 && <section>
+                <SectionHeader icon="chart" title="Charts" color="cyan" />
+                <p>
+                    No charts found for this topic.
                 </p>
             </section>}
 
