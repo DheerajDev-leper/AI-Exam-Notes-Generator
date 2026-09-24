@@ -1,115 +1,57 @@
+const tone = {
+  veryImportant: ["Very important", "bg-coral text-white"],
+  important: ["Important", "bg-marker text-ink"],
+  lessImportant: ["Less important", "bg-brand-soft text-brand"],
+}
+
+function Group({ label, items }) {
+  const list = [].concat(items || [])
+  if (!list.length) return null
+  return (
+    <div className="mb-4">
+      <p className="mb-1.5 text-xs font-bold text-slate-500">{label}</p>
+      <ul className="space-y-1.5">
+        {list.map((q, i) => (
+          <li key={i} className="rounded-lg bg-white px-3 py-2 text-[13px] leading-5 text-slate-700 ring-1 ring-ink/5">{q}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function Sidebar({ result }) {
-    if (
-        !result ||
-        !result.importantTopics ||
-        !result.questions
-    ) {
+    if (!result || !result.importantTopics || !result.questions) {
         return null
     }
 
     return (
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-lg">
+        <aside className="ruled paper-shadow rounded-2xl border border-ink/10 py-5 pl-12 pr-4">
+            <h3 className="mb-4 font-display text-xl font-bold text-ink">Quick view</h3>
 
-            {/* Header */}
-            <div className="mb-5 flex items-center gap-2">
-                <span>📌</span>
-                <h3 className="text-lg font-semibold text-slate-800">
-                    Quick View
-                </h3>
-            </div>
-
-            {/* Important Topics */}
             <section className="mb-6">
-                <p className="mb-3 font-semibold text-slate-700">
-                    Important Topics
-                </p>
-
-                {Object.entries(result.importantTopics).map(
-                    ([priority, topics]) => (
-                        <div key={priority} className="mb-4">
-
-                            <p className="mb-2 text-sm font-medium capitalize text-indigo-600">
-                                {priority.replace("veryImportant", "Very Important")}
-                            </p>
-
-                            <ul className="list-disc space-y-1 pl-5">
-                                {topics.map((topic, i) => (
-                                    <li
-                                        key={i}
-                                        className="text-sm text-slate-600"
-                                    >
-                                        {topic}
-                                    </li>
+                <p className="mb-2 text-sm font-semibold text-ink">Topics to study</p>
+                {Object.entries(result.importantTopics).map(([priority, topics]) => {
+                    const [label, cls] = tone[priority] || [priority, "bg-slate-200 text-ink"]
+                    return (
+                        <div key={priority} className="mb-3">
+                            <span className={`inline-block rounded-md px-2 py-0.5 text-[11px] font-bold ${cls}`}>{label}</span>
+                            <ul className="mt-1.5 space-y-0.5 text-[13px] leading-6 text-slate-700">
+                                {[].concat(topics || []).map((topic, i) => (
+                                    <li key={i}>- {topic}</li>
                                 ))}
                             </ul>
-
                         </div>
                     )
-                )}
+                })}
             </section>
 
-            {/* Questions */}
             <section>
-                <p className="mb-3 font-semibold text-slate-700">
-                    Important Questions
-                </p>
-
-                {/* Short Questions */}
-                <div className="mb-4">
-                    <p className="mb-2 text-sm font-medium text-slate-700">
-                        Short Questions
-                    </p>
-
-                    <ul className="list-disc space-y-1 pl-5">
-                        {result.questions.short.map((question, i) => (
-                            <li
-                                key={i}
-                                className="text-sm text-slate-600"
-                            >
-                                {question}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Long Questions */}
-                <div className="mb-4">
-                    <p className="mb-2 text-sm font-medium text-slate-700">
-                        Long Questions
-                    </p>
-
-                    <ul className="list-disc space-y-1 pl-5">
-                        {result.questions.long.map((question, i) => (
-                            <li
-                                key={i}
-                                className="text-sm text-slate-600"
-                            >
-                                {question}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Diagram Questions */}
-                <div>
-                    <p className="mb-2 text-sm font-medium text-slate-700">
-                        Diagram Questions
-                    </p>
-
-                    <ul className="list-disc space-y-1 pl-5">
-                        {result.questions.diagram.map((question, i) => (
-                            <li
-                                key={i}
-                                className="text-sm text-slate-600"
-                            >
-                                {question}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
+                <p className="mb-2 text-sm font-semibold text-ink">Practice questions</p>
+                <Group label="Short" items={result.questions.short} />
+                <Group label="Long" items={result.questions.long} />
+                <Group label="Diagram" items={result.questions.diagram} />
             </section>
-        </div>
+        </aside>
     )
 }
 

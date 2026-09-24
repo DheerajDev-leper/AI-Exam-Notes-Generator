@@ -3,7 +3,7 @@ import Notes from "../models/notes.model.js"
 export const getMyNotes = async (req, res) => {
     try {
         const notes = await Notes.find({ user: req.userId })
-            .select("topic classLevel")
+            .select("topic classLevel examType revisionMode includeDiagram includeChart createdAt")
             .sort({ createdAt: -1 })
 
         return res.status(200).json(notes)

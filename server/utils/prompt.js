@@ -125,7 +125,7 @@ ${
   - "bar": comparing discrete categories against each other (e.g. comparing 4 processes by duration).
   - "line": showing a trend across an ordered sequence (e.g. change over time, stages, years).
   - "pie": showing proportional breakdown of a whole (parts of 100% or parts of a fixed total).
-- Each chart's "data" field must be an array of objects: [{ "label": "string", "value": number }, ...].
+- Each chart's "data" field must be an array of objects: [{ "name": "string", "value": number }, ...].
 - "value" must be a plain number — no units, no currency symbols, no commas, no strings like "20%" (use 20 and put "%" only in the chart title if needed).
 - Use at most 6 data points per chart, each with a short label (1-3 words).
 - Give each chart a clear, exam-relevant "title" (e.g. "Stages of Mitosis - Relative Duration"), not a generic title like "Chart 1".
@@ -198,7 +198,7 @@ FINAL CHECK BEFORE YOU RESPOND (perform silently, do not output this checklist)
 2. Does every key from OUTPUT FORMAT exist, with the correct type (string/boolean/array/object)?
 3. Are veryImportant/important/lessImportant each populated with at least 2 items?
 4. If diagram.data is non-empty, does it start with "graph TD\\n", use only ID-based edges, and avoid bracket-only connections?
-5. If charts is non-empty, does every entry use a "data" array of { "label", "value" } objects with numeric values only?
+5. If charts is non-empty, does every entry use a "data" array of { "name", "value" } objects with numeric values only?
 6. Are all string values free of literal line breaks, unescaped quotes, and trailing commas?
 7. Does content difficulty and tone match the given classLevel and examType?
 
