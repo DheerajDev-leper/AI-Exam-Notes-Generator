@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Finalresult from "../components/Finalresult";
+import PageTransition from "../components/PageTransition";
 
 function History() {
   const [topics, setTopics] = useState([]);
@@ -48,7 +49,7 @@ function History() {
   };
 
   return (
-    <div className="min-h-screen">
+    <PageTransition className="min-h-screen">
       <div className="aurora"><i /><i /><i /></div>
 
       {/* Header */}
@@ -58,7 +59,7 @@ function History() {
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="rounded-lg bg-ink px-3 py-2 text-white lg:hidden" aria-label="Toggle notes list">☰</button>
             <button onClick={() => navigate("/")} className="flex items-center gap-2.5">
               <span className="flex h-9 w-9 -rotate-6 items-center justify-center rounded-lg bg-ink font-display text-lg font-extrabold text-marker">E</span>
-              <span className="font-display text-xl font-bold text-ink">History</span>
+              <span className="font-display text-xl font-bold text-ink">Your <span className="gradient-text">history</span></span>
             </button>
           </div>
           <div className="flex items-center gap-3">
@@ -185,7 +186,7 @@ function History() {
           </div>
         </main>
       </div>
-    </div>
+    </PageTransition>
   );
 }
 

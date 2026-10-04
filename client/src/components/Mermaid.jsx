@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import mermaid from "mermaid";
 
 mermaid.initialize({
@@ -31,9 +31,11 @@ const cleanMermaidChart = (diagram) => {
 
 function Mermaid({ diagram }) {
   const containerRef = useRef(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (!diagram || !containerRef.current) return;
+    setReady(false);
 
     const renderDiagram = async () => {
       try {
@@ -58,6 +60,8 @@ function Mermaid({ diagram }) {
             Unable to render diagram
           </p>
         `;
+      } finally {
+        setReady(true);
       }
     };
 
@@ -66,7 +70,11 @@ function Mermaid({ diagram }) {
 
   return (
     <div className="w-full overflow-x-auto">
-      <div ref={containerRef} />
+      <div
+        ref={containerRef}
+        className="transition-all duration-500 ease-out"
+        style={{ opacity: ready ? 1 : 0, transform: ready ? "translateY(0)" : "translateY(8px)" }}
+      />
     </div>
   );
 }

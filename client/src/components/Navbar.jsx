@@ -31,20 +31,27 @@ function Navbar() {
       transition={{ type: "spring", stiffness: 200, damping: 24 }}
       className="sticky top-3 z-50 mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-full border border-ink/10 bg-white/80 px-3 py-2 shadow-lg shadow-ink/5 backdrop-blur-xl"
     >
-      <button onClick={() => navigate("/")} className="flex items-center gap-2.5 pl-1">
-        <span className="flex h-9 w-9 -rotate-6 items-center justify-center rounded-lg bg-ink font-display text-lg font-extrabold text-marker">E</span>
+      <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate("/")} className="flex items-center gap-2.5 pl-1">
+        <motion.span
+          whileHover={{ rotate: 0 }}
+          className="flex h-9 w-9 -rotate-6 items-center justify-center rounded-lg bg-ink font-display text-lg font-extrabold text-marker transition-transform"
+        >
+          E
+        </motion.span>
         <span className="hidden font-display text-lg font-bold text-ink sm:block">ExamNotes</span>
-      </button>
+      </motion.button>
 
       <div className="flex items-center gap-2">
         <div className="relative">
           <motion.button
+            whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => { setShowCredits(!showCredit); setShowProfile(false); }}
-            className="flex items-center gap-2 rounded-full bg-marker px-4 py-2 text-sm font-bold text-ink"
+            className="flex items-center gap-2 rounded-full bg-marker px-4 py-2 text-sm font-bold text-ink shadow-sm shadow-marker/40"
           >
-            ⚡ {credits}
-            <motion.span animate={{ rotate: showCredit ? 45 : 0 }} className="flex h-5 w-5 items-center justify-center rounded-full bg-ink text-xs text-white">+</motion.span>
+            <motion.span animate={{ rotate: [0, 15, -15, 0] }} transition={{ repeat: Infinity, repeatDelay: 3, duration: 1 }}>⚡</motion.span>
+            {credits}
+            <motion.span animate={{ rotate: showCredit ? 45 : 0 }} transition={{ duration: 0.25 }} className="flex h-5 w-5 items-center justify-center rounded-full bg-ink text-xs text-white">+</motion.span>
           </motion.button>
           <AnimatePresence>
             {showCredit && (
@@ -52,16 +59,19 @@ function Navbar() {
                 initial={{ opacity: 0, y: -8, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 28 }}
                 className="absolute right-0 mt-3 w-72 rounded-2xl border border-ink/10 bg-white p-4 shadow-2xl shadow-ink/15"
               >
                 <p className="font-display text-2xl font-bold text-ink">{credits} credits</p>
                 <p className="mt-1 text-sm text-slate-500">Each note uses 10 credits.</p>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => { setShowCredits(false); navigate("/pricing"); }}
                   className="btn-brand mt-4 w-full rounded-xl py-2.5 text-sm font-semibold"
                 >
                   Buy more credits
-                </button>
+                </motion.button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -69,9 +79,10 @@ function Navbar() {
 
         <div className="relative">
           <motion.button
+            whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.92 }}
             onClick={() => { setShowProfile(!showProfile); setShowCredits(false); }}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-brand font-display font-bold text-white ring-2 ring-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand to-coral font-display font-bold text-white ring-2 ring-white"
           >
             {userData?.name?.slice(0, 1).toUpperCase() || "U"}
           </motion.button>
@@ -81,6 +92,7 @@ function Navbar() {
                 initial={{ opacity: 0, y: -8, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 28 }}
                 className="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-2xl shadow-ink/15"
               >
                 <div className="ruled px-4 py-3">
@@ -105,9 +117,9 @@ function Navbar() {
 function MenuItem({ onClick, text, red = false }) {
   return (
     <motion.button
-      whileHover={{ x: 3 }}
+      whileHover={{ x: 4 }}
       onClick={onClick}
-      className={`w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium ${red ? "text-coral hover:bg-coral/10" : "text-slate-700 hover:bg-brand-soft hover:text-brand"}`}
+      className={`w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-colors ${red ? "text-coral hover:bg-coral/10" : "text-slate-700 hover:bg-brand-soft hover:text-brand"}`}
     >
       {text}
     </motion.button>

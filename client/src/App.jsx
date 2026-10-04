@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 import Home from "./pages/Home"
 import Auth from "./pages/Auth"
 import Pricing from "./pages/Pricing"
@@ -25,6 +25,7 @@ function App() {
   const dispatch = useDispatch()
   const [checking, setChecking] = useState(true)
   const { userData } = useSelector((state) => state.user)
+  const location = useLocation()
 
   // Wait for the session check so a refresh on /history doesn't bounce you to /auth
   useEffect(() => {
@@ -36,14 +37,16 @@ function App() {
   const guard = (el) => (userData ? el : <Navigate to="/auth" replace />)
 
   return (
-    <Routes>
-      <Route path="/" element={guard(<Home />)} />
-      <Route path="/auth" element={userData ? <Navigate to="/" replace /> : <Auth />} />
-      <Route path="/history" element={guard(<History />)} />
-      <Route path="/notes" element={guard(<Notes />)} />
-      <Route path="/pricing" element={guard(<Pricing />)} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <AnimatePresence mode="wait" initial={false}>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={guard(<Home />)} />
+        <Route path="/auth" element={userData ? <Navigate to="/" replace /> : <Auth />} />
+        <Route path="/history" element={guard(<History />)} />
+        <Route path="/notes" element={guard(<Notes />)} />
+        <Route path="/pricing" element={guard(<Pricing />)} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AnimatePresence>
   )
 }
 

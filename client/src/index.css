@@ -83,3 +83,34 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
     repeating-linear-gradient(transparent 0 31px, rgb(91 61 245 / .13) 31px 32px);
 }
 .paper-shadow { box-shadow: 0 2px 0 rgb(22 24 58 / .06), 0 28px 50px -22px rgb(22 24 58 / .4); }
+
+/* ---- Animated gradient text + gradient backgrounds ---- */
+.gradient-text {
+  background: linear-gradient(100deg, var(--color-brand), var(--color-coral) 45%, var(--color-brand) 90%);
+  background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: gradient-flow 6s ease-in-out infinite;
+}
+@keyframes gradient-flow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+.gradient-mesh {
+  background: linear-gradient(120deg, var(--color-brand-soft), #fff 35%, #fff 65%, rgb(255 216 77 / .18));
+  background-size: 200% 200%;
+  animation: gradient-flow 14s ease-in-out infinite;
+}
+
+.gradient-ring {
+  position: relative; border-radius: 1.5rem; padding: 1px;
+  background: linear-gradient(135deg, var(--color-brand), var(--color-marker), var(--color-coral));
+  background-size: 200% 200%;
+  animation: gradient-flow 8s ease-in-out infinite;
+}
+.gradient-ring > * { border-radius: calc(1.5rem - 1px); background: #fff; height: 100%; }
+
+/* Shared page-enter transition timing */
+.page-enter { animation: page-in .5s cubic-bezier(.22,1,.36,1) both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text, .gradient-mesh, .gradient-ring { animation: none; }
+}

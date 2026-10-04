@@ -24,10 +24,16 @@ const toneMap = {
 
 function SectionHeader({ icon, title, tone = "brand" }) {
   return (
-    <div className="mb-4 mt-10 flex items-center gap-3">
+    <motion.div
+      initial={{ opacity: 0, x: -14 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.4 }}
+      className="mb-4 mt-10 flex items-center gap-3"
+    >
       <span className={`flex h-9 w-9 items-center justify-center rounded-xl text-base ${toneMap[tone]}`}>{icon}</span>
       <h3 className="text-xl font-bold text-ink">{title}</h3>
-    </div>
+    </motion.div>
   )
 }
 
@@ -45,8 +51,9 @@ function QuestionGroup({ label, items }) {
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            whileHover={{ x: 4, borderColor: "var(--color-brand)" }}
             transition={{ delay: i * 0.05 }}
-            className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700"
+            className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 transition-colors"
           >
             {q}
           </motion.li>
@@ -79,7 +86,12 @@ function Finalresult({ result }) {
   }
 
   return (
-    <div className="glass card-shadow rounded-3xl p-5 sm:p-8">
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="glass card-shadow rounded-3xl p-5 sm:p-8"
+    >
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-3xl font-extrabold text-ink">
@@ -102,7 +114,7 @@ function Finalresult({ result }) {
                   <motion.span
                     layoutId="mode-pill"
                     transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                    className="absolute inset-0 -z-10 rounded-full bg-brand shadow-md shadow-brand/30"
+                    className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-brand to-brand-deep shadow-md shadow-brand/30"
                   />
                 )}
                 {label}
@@ -111,7 +123,7 @@ function Finalresult({ result }) {
           </div>
 
           <motion.button
-            whileHover={{ y: -2 }}
+            whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.96 }}
             onClick={handleDownload}
             disabled={downloading}
@@ -127,8 +139,16 @@ function Finalresult({ result }) {
           <motion.div key="detailed" {...fade}>
             <SectionHeader icon="★" title="Sub topics" tone="marker" />
             <div className="grid gap-4 sm:grid-cols-3">
-              {Object.entries(result.importantTopics).map(([priority, topics]) => (
-                <div key={priority} className="rounded-2xl border border-slate-200 bg-white p-4">
+              {Object.entries(result.importantTopics).map(([priority, topics], gi) => (
+                <motion.div
+                  key={priority}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: gi * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className="rounded-2xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md hover:shadow-brand/10"
+                >
                   <p className="mb-2 text-sm font-bold capitalize text-brand">
                     {priority.replace("veryImportant", "Very important")}
                   </p>
@@ -137,7 +157,7 @@ function Finalresult({ result }) {
                       <li key={i} className="flex gap-2"><span className="text-brand">•</span>{t}</li>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -154,7 +174,8 @@ function Finalresult({ result }) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 }}
-                  className="flex gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700"
+                  whileHover={{ x: 4 }}
+                  className="flex gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 transition-colors hover:border-marker"
                 >
                   <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-marker ring-2 ring-marker/30" />
                   {p}
@@ -168,9 +189,14 @@ function Finalresult({ result }) {
       {result.diagram?.data && (
         <section>
           <SectionHeader icon="◈" title="Diagram" tone="mint" />
-          <div className="rounded-2xl border border-slate-200 bg-white p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-2xl border border-slate-200 bg-white p-4"
+          >
             <Mermaid diagram={result.diagram.data} />
-          </div>
+          </motion.div>
           <p className="mt-2 text-xs text-slate-500">Need it for your notebook? Take a screenshot.</p>
         </section>
       )}
@@ -186,7 +212,7 @@ function Finalresult({ result }) {
       <QuestionGroup label="Short questions" items={asList(result.questions.short)} />
       <QuestionGroup label="Long questions" items={asList(result.questions.long)} />
       <QuestionGroup label="Diagram questions" items={asList(result.questions.diagram)} />
-    </div>
+    </motion.div>
   )
 }
 
