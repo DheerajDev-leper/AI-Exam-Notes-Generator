@@ -105,11 +105,11 @@ cd ..
 
 # Backend
 cd server
-npm install firebase-admin express mongoose jsonwebtoken cookie-parser cors dotenv pdfkit
+npm install
 cd ..
 ```
 
-> The frontend's `package.json` should already include `react`, `react-router-dom`, `@reduxjs/toolkit`, `react-redux`, `axios`, `motion`, `react-markdown`, `mermaid`, `recharts`, `react-icons`, `firebase`, and `tailwindcss`. Install any that are missing with `npm install <package>` inside `client/`.
+> **Note:** All required dependencies are already listed in the `package.json` files. Simply run `npm install` inside both `client/` and `server/`. If you encounter a missing-package error, install the specific package mentioned by the error using `npm install <package>`.
 
 ### 2. Configure environment variables
 
